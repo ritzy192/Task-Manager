@@ -7,16 +7,21 @@ mongoose.connect('mongodb://127.0.0.1:27017/task-manger-api', {
 
 const User = mongoose.model('Users', {
     Name: {
-        type: String
+        type: String,
+        required: true
     },
     Age: {
-        type: Number
+        type: Number,
+        validate(value){
+            if(value<0)
+                throw new Error('Age must be a positive number.')
+        }
     }
 }) 
 
 const me = new User({
     Name: 'Rythem Datta',
-    Age: '24',
+    Age: 25,
 })
 
 me.save().then( () => {
@@ -25,22 +30,22 @@ me.save().then( () => {
     console.log(error)
 })
 
-const Tasks = mongoose.model('Tasks', {
-    Description: {
-        type: String
-    }, 
-    Completed: {
-        type: Boolean
-    }
-})
+// const Tasks = mongoose.model('Tasks', {
+//     Description: {
+//         type: String
+//     }, 
+//     Completed: {
+//         type: Boolean
+//     }
+// })
 
-const task = new Tasks({
-    Description: 'Task 1',
-    Completed: true
-})
+// const task = new Tasks({
+//     Description: 'Task 1',
+//     Completed: true
+// })
 
-task.save().then(() => {
-    console.log(task)
-}).catch((error) => {
-    console.log(error)
-})
+// task.save().then(() => {
+//     console.log(task)
+// }).catch((error) => {
+//     console.log(error)
+// })
