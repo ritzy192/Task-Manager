@@ -9,6 +9,8 @@ getData((error,result) => {
     console.log(result)
 })
 
+
+//Promise
 const getDataPromise = new Promise((resolve, reject) => {
     setTimeout(() => {
         //resolve('asfsafas')
