@@ -1,0 +1,4 @@
+To start mongodb : $ mongodb/bin/mongod.exe --dbpath=/Users/2096688/mongodb-data
+                (location if .exe file)                 (db data path)
+
+To run application : $ npm run dev
