@@ -8,15 +8,17 @@ const port = process.env.PORT || 3000
 //to automatically parse incoming json into object
 app.use(express.json())
 
-// app.post("/users", (req,res) =>{
-//     const user = new User(req.body)
-
-//     user.save().then(() => {
-//         res.send(user)
-//     }).catch((e) => {
-//         res.send(e)
-//     })
-// })
+app.post("/users", (req,res) =>{
+    //initialise new user
+    const user = new User(req.body)
+    
+    //save user into database
+    user.save().then(() => {
+        res.send(user)
+    }).catch((e) => {
+        res.send(e)
+    })
+})
 
 app.listen(port,() => {
     console.log('Server is up on port ' + port)
