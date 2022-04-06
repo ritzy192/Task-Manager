@@ -45,6 +45,13 @@ app.get('/users/:id',async (req,res) => {
 
 //Update User
 app.patch('/users/:id',async (req,res)=>{
+    const updateFieldsRequested = Object.keys(req.body)
+    const allowedUpdates = ['name','password','email','age']
+    
+    //checks if requested fields are present in allowedupdates array
+    const isValidUpdate = updateFieldsRequested.every((key)=>allowedUpdates.includes(key))
+    if(!isValidUpdate)
+        return res.status(404).send({error:'Invalid Update!'})
     try {
         const user = await User.findByIdAndUpdate(req.params.id,req.body,{new: true,validators:true})
         if(!user)
