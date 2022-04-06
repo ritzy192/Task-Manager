@@ -10,68 +10,73 @@ const port = process.env.PORT || 3000
 app.use(express.json())
 
 //Create Users
-app.post("/users", (req,res) =>{
+app.post("/users", async (req,res) =>{
     //initialise new user
-    const user = new User(req.body)
-    
-    //save user into database
-    user.save().then(() => {
+    const user = new User(req.body)  
+    try{
+        await user.save()
         res.status(201).send(user)
-    }).catch((e) => {
+    }catch (e) {
         res.status(400).send(e)
-    })
+    }
 })
 
 //Read all Users
-app.get('/users',(req,res) => {
-    User.find({}).then((users)=>{
-        res.send(users)
-    }).catch((e)=>{
+app.get('/users', async (req,res) => {
+    try {
+        const users = await User.find({})
+        res.status(200).send(users)
+    } catch (e) {
         res.status(500).send(e)
-    })
+    }
 })
 
 //Read one user
-app.get('/users/:id',(req,res) => {
-    User.findById(req.params.id).then((user)=>{
+app.get('/users/:id',async (req,res) => {
+    try {
+        const user = await User.findById(req.params.id)
         if(!user)
             return res.status(404).send()
-       res.status(200).send(user) 
-    }).catch((e)=>{
-        res.status(500).send()
-    })
+        res.status(200).send(user)       
+    } catch (e) {
+        res.status(500).send(e)
+    }
 })
 
 //Create Tasks
-app.post("/tasks", (req,res) =>{
+app.post("/tasks", async (req,res) =>{
     //initialise new task
-    const task = new Task(req.body)    
-    //save task into database
-    task.save().then(() => {
+    const task = new Task(req.body) 
+    try {
+        await task.save()
         res.status(200).send(task)
-    }).catch((e) => {
+    } catch (e) {
         res.status(400).send(e)
-    })
+    }
 })
 
 //Read all Tasks
-app.get('/tasks',(req,res)=>{
-    Task.find({}).then((tasks)=>{
-        if(!task)
+app.get('/tasks',async (req,res)=>{
+    try {
+        const tasks = await Task.find({})
+        if(!tasks)
             return res.status(404).send()
         res.status(200).send(tasks)
-    }).catch((e)=>{
-        res.status(500).send()
-    })
+    } catch (e) {
+        res.status(500).send(e)
+    }
 })
 
 //Read One Task
-app.get('/tasks/:id',(req,res)=>{
-    Task.findById(req.params.id).then((task)=>{
+app.get('/tasks/:id',async (req,res)=>{
+    try {
+        const task = await Task.findById(req.params.id)
+        if(!task)
+            return res.status(404).send()
         res.send(task)
-    }).catch((e)=>{
+    } catch (e) {
         res.status(500).send()
-    })
+    }
 })
 app.listen(port,() => {
     console.log('Server is up on port ' + port)
